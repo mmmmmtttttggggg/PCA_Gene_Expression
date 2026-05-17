@@ -29,7 +29,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
-# Assignment genes + optional second loading gene (Nature primer uses CCNB2)
+#assignment genes + optional second loading gene (Nature primer uses CCNB2)
 GENES_TWO_GENE_SCATTER = ("GATA3", "XBP1")  # panel a/b: x, y
 
 
@@ -179,7 +179,7 @@ def main() -> None:
     pos = labels == 1  # ER+
     neg = labels == 0  # ER-
 
-    # --- Panel a: GATA3 (x) vs XBP1 (y), black / red (Nature-style) ---
+    #panel a: GATA3 (x) vs XBP1 (y), black / red (Nature-style) 
     fig_a, ax_a = plt.subplots(figsize=(5.5, 5))
     ax_a.scatter(gata3[neg], xbp1[neg], c="black", s=28, edgecolors="none", alpha=0.85, label="ER−")
     ax_a.scatter(gata3[pos], xbp1[pos], c="red", s=28, edgecolors="none", alpha=0.85, label="ER+")
@@ -191,7 +191,7 @@ def main() -> None:
     fig_a.savefig(out_dir / "pca_panel_a_gata3_xbp1_scatter.png", dpi=200)
     plt.close(fig_a)
 
-    # --- Panel b: same + PC1/PC2 in raw (GATA3, XBP1) space ---
+    #panel b: same + PC1/PC2 in raw (GATA3, XBP1) space 
     fig_b, ax_b = plt.subplots(figsize=(5.5, 5))
     ax_b.scatter(gata3[neg], xbp1[neg], c="black", s=28, edgecolors="none", alpha=0.85)
     ax_b.scatter(gata3[pos], xbp1[pos], c="red", s=28, edgecolors="none", alpha=0.85)
@@ -203,7 +203,7 @@ def main() -> None:
     fig_b.savefig(out_dir / "pca_panel_b_gata3_xbp1_pc_axes.png", dpi=200)
     plt.close(fig_b)
 
-    # Full-matrix PCA (genes standardized)
+    #full-matrix PCA (genes standardized)
     scaler = StandardScaler()
     Xs = scaler.fit_transform(X)
     n_samples, n_features = Xs.shape
@@ -220,7 +220,7 @@ def main() -> None:
     pca1_full = PCA(n_components=1, random_state=0)
     pc1_scores = pca1_full.fit_transform(Xs).ravel()
 
-    # --- Panel c: PC1 scores (full PCA), rows All / ER− / ER+ ---
+    #panel c: PC1 scores (full PCA), rows All / ER− / ER+ 
     fig_c, ax_c = plt.subplots(figsize=(7, 4.2))
     row_y = {"All": 2.0, "ER−": 1.0, "ER+": 0.0}
     jitter_h = 0.12
@@ -236,7 +236,7 @@ def main() -> None:
     fig_c.savefig(out_dir / "pca_panel_c_pc1_projection_by_er.png", dpi=200)
     plt.close(fig_c)
 
-    # --- Panel d: Scree ---
+    #panel d: Scree 
     fig_d, ax_d = plt.subplots(figsize=(7, 3.8))
     xs = np.arange(1, len(ratios_pct) + 1)
     ax_d.bar(xs, ratios_pct, color="0.45", width=0.9, edgecolor="0.2", linewidth=0.2)
@@ -248,7 +248,7 @@ def main() -> None:
     fig_d.savefig(out_dir / "pca_panel_d_scree_plot.png", dpi=200)
     plt.close(fig_d)
 
-    # --- Panel e: Biplot PC1 vs PC2 + loading arrows for XBP1 and CCNB2 (or GATA3) ---
+    #panel e: Biplot PC1 vs PC2 + loading arrows for XBP1 and CCNB2 (or GATA3) 
     sym2, col_b2 = resolve_biplot_second_gene(expr, annot)
     col_xbp = resolve_probe_column(expr, "XBP1", annot)
     idx_xbp = int(expr.columns.get_loc(col_xbp))
@@ -280,7 +280,7 @@ def main() -> None:
     fig_e.savefig(out_dir / "pca_panel_e_biplot_pc1_pc2.png", dpi=200)
     plt.close(fig_e)
 
-    # --- Panel f: same geometry, alternate colors (blue / orange) ---
+    #panel f: same geometry, alternate colors (blue / orange) 
     fig_f, ax_f = plt.subplots(figsize=(6, 5.5))
     ax_f.scatter(scores_2d[neg, 0], scores_2d[neg, 1], c="#1f77b4", s=28, alpha=0.88, label="ER−")
     ax_f.scatter(scores_2d[pos, 0], scores_2d[pos, 1], c="#ff7f0e", s=28, alpha=0.88, label="ER+")
@@ -306,7 +306,7 @@ def main() -> None:
     pca1_two_gene = PCA(n_components=1, random_state=0)
     pc1_two_gene_scores = pca1_two_gene.fit_transform(np.column_stack([gata3, xbp1])).ravel()
 
-    # Table: scores + variance
+    #table: scores + variance
     out_tbl = pd.DataFrame(
         {
             "sample_index": np.arange(len(labels)),
